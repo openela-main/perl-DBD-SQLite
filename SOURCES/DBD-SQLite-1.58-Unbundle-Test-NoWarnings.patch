@@ -1,0 +1,65 @@
+From 1944bbf4f29181690097e61f1410d30d43343b02 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Petr=20P=C3=ADsa=C5=99?= <ppisar@redhat.com>
+Date: Thu, 29 Mar 2018 10:40:17 +0200
+Subject: [PATCH] Unbundle Test::NoWarnings
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Petr Písař <ppisar@redhat.com>
+---
+ Makefile.PL                               |   6 ++----
+ t/virtual_table/11_filecontent_fulltext.t |   7 ++-----
+
+diff --git a/Makefile.PL b/Makefile.PL
+index fcdf771..3860eda 100644
+--- a/Makefile.PL
++++ b/Makefile.PL
+@@ -330,8 +330,7 @@ WriteMakefile(
+ 		'Tie::Hash'     => 0,
+ 		'File::Spec'    => (WINLIKE ? '3.27' : '0.82'),
+ 		'DBI'           => $DBI_required,
+-		'Test::More'    => '0.47', # Test::NoWarnings
+-		'Test::Builder' => '0.86', # Test::NoWarnings
++		'Test::More'    => 0,
+ 		( WINLIKE ? (
+ 			'Win32' => '0.30',
+ 		) : () ),
+@@ -363,8 +362,7 @@ WriteMakefile(
+ 			build_requires => {
+ 				'File::Spec'          => (WINLIKE ? '3.27' : '0.82'),
+ 				'Test::More'          => '0.42',
+-				# Bundled in /inc
+-				# 'Test::NoWarnings'  => '0.081',
++				'Test::NoWarnings'  => '0.081',
+ 			},
+ 			requires => {
+ 				'Tie::Hash' => 0,
+diff --git a/t/virtual_table/11_filecontent_fulltext.t b/t/virtual_table/11_filecontent_fulltext.t
+index b95b115..7e805f1 100644
+--- a/t/virtual_table/11_filecontent_fulltext.t
++++ b/t/virtual_table/11_filecontent_fulltext.t
+@@ -27,9 +27,7 @@ my @tests = (
+                           lib/DBD/SQLite/VirtualTable/FileContent.pm
+                           lib/DBD/SQLite/VirtualTable/PerlData.pm]],
+   ["install_method" => qw[lib/DBD/SQLite.pm]],
+-  ['"use strict"'   => qw[inc/Test/NoWarnings.pm
+-                          inc/Test/NoWarnings/Warning.pm
+-                          lib/DBD/SQLite.pm
++  ['"use strict"'   => qw[lib/DBD/SQLite.pm
+                           lib/DBD/SQLite/Constants.pm
+                           lib/DBD/SQLite/VirtualTable.pm
+                           lib/DBD/SQLite/VirtualTable/FileContent.pm
+@@ -42,8 +40,7 @@ my @tests = (
+ # literally.
+ if (grep /ENABLE_FTS3_PARENTHESIS/, DBD::SQLite::compile_options()) {
+   push @tests, (
+-  ['"use strict" AND "use warnings"' => qw[inc/Test/NoWarnings.pm
+-                                           lib/DBD/SQLite/Constants.pm
++  ['"use strict" AND "use warnings"' => qw[lib/DBD/SQLite/Constants.pm
+                                            lib/DBD/SQLite/VirtualTable.pm
+                                            lib/DBD/SQLite/VirtualTable/FileContent.pm
+                                            lib/DBD/SQLite/VirtualTable/PerlData.pm
+-- 
+2.14.3
+
